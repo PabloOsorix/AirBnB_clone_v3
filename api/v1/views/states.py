@@ -11,7 +11,7 @@ from api.v1.views import app_views
 from flask import jsonify, make_response, request, abort
 
 
-@app_views.get("/states", strict_slashes=False)
+@app_views.route('/states', methods=['GET'], strict_slashes=False)
 def all_states():
     """Route that returns a list of all states in
     the storage engine."""
@@ -21,7 +21,7 @@ def all_states():
     return jsonify(list_states)
 
 
-@app_views.get("/states/<state_id>", strict_slashes=False)
+@app_views.route('/states/<state_id>', methods=['GET'], strict_slashes=False)
 def state_by_id(state_id):
     """Route that returns a state of the
     storage engine with a given id."""
@@ -35,7 +35,8 @@ def state_by_id(state_id):
         return abort(404)
 
 
-@app_views.delete("/states/<state_id>", strict_slashes=False)
+@app_views.route('/states/<state_id>',
+                methods=['DELETE'], strict_slashes=False)
 def del_state_id(state_id):
     """Route that delete a state from the
     storage engine with a given id"""
@@ -49,7 +50,7 @@ def del_state_id(state_id):
         abort(404)
 
 
-@app_views.post("/states",  strict_slashes=False)
+@app_views.route('/states', methods=['POST'], strict_slashes=False)
 def new_state():
     """Route to add a new object State in a
     storage engine.
@@ -68,7 +69,7 @@ def new_state():
     return make_response(jsonify(new_state.to_dict()), 201)
 
 
-@app_views.put("/states/<state_id>", strict_slashes=False)
+@app_views.route('/states/<state_id>', methods=['PUT'], strict_slashes=False)
 def update_state(state_id):
     """Route to update an object with a given
     id in the storage engine"""
