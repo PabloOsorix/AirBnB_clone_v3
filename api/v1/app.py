@@ -16,7 +16,7 @@ app.register_blueprint(app_views)
 def page_not_found(e):
     """Handler to the error 404 when a url(uri) is not
     found"""
-    return make_response(jsonify({"error": "Not found"}), 400)
+    return make_response(jsonify({"error": "Not found"}), 404)
 
 
 @app.teardown_appcontext
