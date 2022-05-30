@@ -20,7 +20,9 @@ def close(execute):
 
 
 @app.errorhandler(404)
-def page_not_found(error):
+def page_not_found(e):
+    """Handler to the error 404 when a url(uri) is not
+    found"""
     return jsonify({"error": "Not found"})
 
 
