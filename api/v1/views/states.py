@@ -4,7 +4,6 @@ Module that contains the route (/states)
 it allow GET, DELETE, POST OR PUT an object
 to the the storage engine (database of file).
 """
-from api.v1.app import page_not_found
 from models import storage
 from models.state import State
 from api.v1.views import app_views
@@ -22,32 +21,28 @@ def all_states():
 
 
 @app_views.route('/states/<state_id>', methods=['GET'], strict_slashes=False)
-def state_by_id(state_id):
+def state_by_id(state_id=None):
     """Route that returns a state of the
     storage engine with a given id."""
-    try:
-        object = {}
-        object = storage.get(State, state_id)
-        if object is not None:
-            return jsonify(object.to_dict())
+    object = {}
+    object = storage.get(State, state_id)
+    if not object:
         abort(404)
-    except Exception:
-        return abort(404)
+    return jsonify(object.to_dict())
 
 
 @app_views.route('/states/<state_id>',
                 methods=['DELETE'], strict_slashes=False)
-def del_state_id(state_id):
+def del_state_id(state_id=None):
     """Route that delete a state from the
     storage engine with a given id"""
     object = {}
     object = storage.get(State, state_id)
-    if object:
-        storage.delete(object)
-        storage.save()
-        return make_response(jsonify({}), 200)
-    else:
+    if not object:
         abort(404)
+    storage.delete(object)
+    storage.save()
+    return make_response(jsonify({}), 200)
 
 
 @app_views.route('/states', methods=['POST'], strict_slashes=False)
@@ -61,7 +56,7 @@ def new_state():
         args = request.get_json()
     except Exception:
         return make_response(jsonify({"error": "Not a JSON"}), 400)
-    if args.get("name") is None or args.get("name") == "":
+    if "name" not in args:
         return make_response(jsonify({"error": "Missing name"}), 400)
     new_state = State(**args)
     storage.new(new_state)
@@ -70,11 +65,11 @@ def new_state():
 
 
 @app_views.route('/states/<state_id>', methods=['PUT'], strict_slashes=False)
-def update_state(state_id):
+def update_state(state_id=None):
     """Route to update an object with a given
     id in the storage engine"""
     search_object = storage.get(State, state_id)
-    if search_object is None:
+    if not search_object:
         abort(404)
     try:
         args = request.get_json()
@@ -82,7 +77,7 @@ def update_state(state_id):
         return make_response(jsonify({"error": "Not a JSON"}), 400)
 
     for key, value in args.items():
-        if key != ["updated_at", "created_at", "id"]:
+        if key not in ["updated_at", "created_at", "id"]:
             setattr(search_object, key, value)
     storage.save()
     return make_response(jsonify(search_object.to_dict()), 200)
