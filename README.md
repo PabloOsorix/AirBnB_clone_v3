@@ -157,6 +157,6 @@ No known bugs at this time.
 Felipe Leon - [Github]() / [Twitter]()  
 Pablo Osorio - [Github](https://github.com/PabloOsorix) / [Twitter](https://twitter.com/Pabllitoosorio)
 
-Second part of Airbnb: Joann Vuong
+
 ## License
 Public Domain. No copy write protection. 
