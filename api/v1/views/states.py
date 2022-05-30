@@ -30,7 +30,7 @@ def all_states(state_id=None):
 
 
 @app_views.route('/states/<state_id>',
-                methods=['DELETE'], strict_slashes=False)
+                 methods=['DELETE'], strict_slashes=False)
 def del_state_id(state_id=None):
     """Route that delete a state from the
     storage engine with a given id"""
