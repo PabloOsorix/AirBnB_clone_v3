@@ -1,6 +1,6 @@
 #!/usr/bin/python3
 """Module that initialice a flask web instance
-it contain one route 
+it contain one route.
 """
 from os import getenv
 from flask import Flask
@@ -11,7 +11,6 @@ from api.v1.views.index import app_views
 
 app = Flask(__name__)
 app.register_blueprint(app_views)
-
 
 
 @app.teardown_appcontext
