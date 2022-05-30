@@ -4,12 +4,11 @@ Module that contains the route (/states)
 it allow GET, DELETE, POST OR PUT an object
 to the the storage engine (database of file).
 """
-import json
 from api.v1.app import page_not_found
 from models import storage
 from models.state import State
 from api.v1.views import app_views
-from flask import jsonify, make_response, request
+from flask import jsonify, make_response, request, abort
 
 
 @app_views.get("/states", strict_slashes=False)
@@ -31,9 +30,9 @@ def state_by_id(state_id):
         object = storage.get(State, state_id)
         if object is not None:
             return jsonify(object.to_dict())
-        return page_not_found(404)
+        abort(404)
     except Exception:
-        return page_not_found(404)
+        return abort(404)
 
 
 @app_views.delete("/states/<state_id>", strict_slashes=False)
@@ -47,7 +46,7 @@ def del_state_id(state_id):
         storage.save()
         return make_response(jsonify({}), 200)
     else:
-        return page_not_found(404)
+        abort(404)
 
 
 @app_views.post("/states",  strict_slashes=False)
@@ -75,7 +74,7 @@ def update_state(state_id):
     id in the storage engine"""
     search_object = storage.get(State, state_id)
     if search_object is None:
-        return page_not_found(404)
+        abort(404)
     try:
         args = request.get_json()
     except Exception:
