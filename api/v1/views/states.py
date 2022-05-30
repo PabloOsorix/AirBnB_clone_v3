@@ -11,24 +11,22 @@ from flask import jsonify, make_response, request, abort
 
 
 @app_views.route('/states', methods=['GET'], strict_slashes=False)
-def all_states():
-    """Route that returns a list of all states in
-    the storage engine."""
-    list_states = []
-    for obj in storage.all(State).values():
-        list_states.append(obj.to_dict())
-    return jsonify(list_states)
-
-
 @app_views.route('/states/<state_id>', methods=['GET'], strict_slashes=False)
-def state_by_id(state_id=None):
-    """Route that returns a state of the
-    storage engine with a given id."""
-    object = {}
-    object = storage.get(State, state_id)
-    if not object:
-        abort(404)
-    return jsonify(object.to_dict())
+def all_states(state_id=None):
+    """Route that returns a list of all states in
+    the storage engine. or return a State with a
+    given id"""
+    if state_id is None:
+        list_states = []
+        for obj in storage.all(State).values():
+            list_states.append(obj.to_dict())
+        return jsonify(list_states)
+    else:
+        object = {}
+        object = storage.get(State, state_id)
+        if not object:
+            abort(404)
+        return jsonify(object.to_dict())
 
 
 @app_views.route('/states/<state_id>',
@@ -59,7 +57,6 @@ def new_state():
     if "name" not in args:
         return make_response(jsonify({"error": "Missing name"}), 400)
     new_state = State(**args)
-    storage.new(new_state)
     storage.save()
     return make_response(jsonify(new_state.to_dict()), 201)
 
