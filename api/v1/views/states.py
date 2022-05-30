@@ -50,9 +50,9 @@ def new_state():
     args = Data input of body the
     post request.
     """
-    try:
-        args = request.get_json()
-    except Exception:
+    args = request.get_json()
+
+    if args is None:
         return make_response(jsonify({"error": "Not a JSON"}), 400)
     if "name" not in args:
         return make_response(jsonify({"error": "Missing name"}), 400)
@@ -68,9 +68,8 @@ def update_state(state_id=None):
     search_object = storage.get(State, state_id)
     if not search_object:
         abort(404)
-    try:
-        args = request.get_json()
-    except Exception:
+    args = request.get_json()
+    if args is None:
         return make_response(jsonify({"error": "Not a JSON"}), 400)
 
     for key, value in args.items():
