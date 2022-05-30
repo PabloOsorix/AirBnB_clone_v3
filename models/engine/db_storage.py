@@ -73,7 +73,7 @@ class DBStorage:
 
     def get(self, cls, id):
         """Method to get an object based on the class and its ID"""
-        if cls is None or id is None:
+        if cls is None or id is None or isinstance(id, str) is False:
             return None
         searched_object = {}
         searched_object = self.all(cls).get(cls.__name__ + "." + id)
