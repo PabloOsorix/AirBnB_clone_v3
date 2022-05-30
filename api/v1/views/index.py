@@ -9,4 +9,4 @@ import flask import jsonify
 def status():
     """Return JSON with the status of the API"""
     obj = {"status": "OK"}
-    return jsonify({"status":"OK"})
+    return jsonify({"status": "OK"})
