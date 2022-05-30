@@ -2,7 +2,7 @@
 """Module with a Blueprint object that have one
 route with /status lie an end point"""
 from api.v1.views import app_views
-import flask import jsonify
+from flask import jsonify
 
 
 @app_views.route('/status', strict_slashes=False)
