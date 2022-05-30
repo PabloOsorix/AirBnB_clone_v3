@@ -4,7 +4,7 @@ it contain one route.
 """
 from os import getenv
 from flask import Flask
-from flask_cors import CORS
+from flask import jsonify
 from models import storage
 from api.v1.views.index import app_views
 
@@ -17,6 +17,11 @@ app.register_blueprint(app_views)
 def close(execute):
     """Instance that close conection with engine"""
     storage.close()
+
+
+@app.errorhandler(404)
+def page_not_found(error):
+    return jsonify({"error": "Not found"})
 
 
 if __name__ == "__main__":
