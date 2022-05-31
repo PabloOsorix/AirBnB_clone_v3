@@ -55,7 +55,7 @@ def delete_place(place_id=None):
 
 @app_views.route("/cities/<city_id>/places", methods=["POST"],
                  strict_slashes=False)
-def new_place(city_id):
+def new_place(city_id=None):
     """Route to add a new place in a City by a
     given city id.
     (json) inf_place = input information to create
@@ -66,9 +66,9 @@ def new_place(city_id):
 
     inf_place = request.get_json()
     if not inf_place:
-        return make_response(jsonify({"errorr": "Not a JSON"}), 400)
+        return make_response(jsonify({"error": "Not a JSON"}), 400)
     if "user_id" not in inf_place:
-        return make_response(jsonify({"errorr": "Missing user_id"}), 400)
+        return make_response(jsonify({"error": "Missing user_id"}), 400)
     user = storage.get(User, inf_place.get("user_id"))
     if not user:
         abort(404)
