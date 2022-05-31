@@ -12,7 +12,7 @@ from api.v1.views import app_views
 from flask import jsonify, make_response, request, abort
 
 
-@app_views.route("cities/<city_id>/places", methods=["GET"],
+@app_views.route("/cities/<city_id>/places", methods=["GET"],
                  strict_slashes=False)
 def places_by_city(city_id=None):
     """Route that returns all places associated
@@ -37,7 +37,8 @@ def place_by_id(place_id=None):
     return jsonify(wanted_place.to_dict())
 
 
-@app_views.route("places/<place_id>", methods=["DELETE"], strict_slashes=False)
+@app_views.route("/places/<place_id>",
+                 methods=["DELETE"], strict_slashes=False)
 def delete_place(place_id=None):
     """Route that delete a place with a given
     id.
@@ -52,7 +53,7 @@ def delete_place(place_id=None):
     return make_response(jsonify({}), 200)
 
 
-@app_views.route("cities/<city_id>/places", methods=["POST"],
+@app_views.route("/cities/<city_id>/places", methods=["POST"],
                  strict_slashes=False)
 def new_place(city_id):
     """Route to add a new place in a City by a
