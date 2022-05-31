@@ -75,7 +75,7 @@ def update_amenity(amenity_id=None):
         abort(404)
 
     inf_amenity = request.get_json()
-    if inf_amenity is None:
+    if not inf_amenity:
         return make_response(jsonify({"error": "Not a JSON"}), 400)
 
     for key, value in inf_amenity.items():
