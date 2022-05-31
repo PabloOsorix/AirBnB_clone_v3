@@ -38,7 +38,8 @@ def review_by_id(review_id=None):
     return jsonify(wanted_review.to_dict())
 
 
-@app_views.route("reviews/<review_id>", methods=["DELETE"], strict_slashes=False)
+route = "reviews/<review_id>"
+@app_views.route(route, methods=["DELETE"], strict_slashes=False)
 def delete_review(review_id):
     """Route that delete a review from the storage
     engine with a given id.
@@ -100,7 +101,8 @@ def update_review(review_id=None):
         return make_response(jsonify({"error": "Not a JSON"}), 400)
 
     for key, value in inf_review.items():
-        if key not in ["id", "user_id", "created_at", "updated_at", "place_id"]:
+        attrs = ["id", "user_id", "created_at", "updated_at", "place_id"]
+        if key not in attrs:
             setattr(review_to_upd, key, value)
     storage.save()
     return make_response(jsonify(review_to_upd.to_dict()), 200)
