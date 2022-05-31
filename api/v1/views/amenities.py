@@ -10,28 +10,24 @@ from flask import jsonify, make_response, request, abort
 
 
 @app_views.route("/amenities", methods=["GET"], strict_slashes=False)
-def all_amenities():
-    """Route that return all Amenity objects
-    from the storage engine.
-    (objects of class Amenity) amenities = list
-                               of all amenities"""
-    amenities = []
-    for obj in storage.all(Amenity).values():
-        amenities.append(obj.to_dict())
-    return jsonify(amenities)
-
 @app_views.route("/amenities/<amenity_id>", methods=["GET"],
                  strict_slashes=False)
-def amenity_by_id(amenity_id=None):
-    """Route that return an amenity through
-    a given id.
-
-    (Object of class Amenity) wanted_amenity =
-    searched Amenity"""
-    wanted_amenity = storage.get(Amenity, amenity_id)
-    if not wanted_amenity:
-        abort(404)
-    return jsonify(wanted_amenity.to_dict())
+def all_amenities(amenity_id=None):
+    """Route that return all Amenity objects
+    from the storage engine of just one with a
+    given id.
+    (objects of class Amenity) amenities = list
+                               of all amenities"""
+    if amenity_id is None:
+        amenities = []
+        for obj in storage.all(Amenity).values():
+            amenities.append(obj.to_dict())
+        return jsonify(amenities)
+    else:
+        wanted_amenity = storage.get(Amenity, amenity_id)
+        if not wanted_amenity:
+            abort(404)
+        return jsonify(wanted_amenity.to_dict())
 
 @app_views.route("amenities/<amenity_id>",
                  methods=["DELETE"], strict_slashes=False)
