@@ -22,7 +22,7 @@ def all_amenities():
 
 @app_views.route("/amenities/<amenity_id>", methods=["GET"],
                  strict_slashes=False)
-def amenity_by_id(amenity_id):
+def amenity_by_id(amenity_id=None):
     """Route that return an amenity through
     a given id.
 
@@ -35,7 +35,7 @@ def amenity_by_id(amenity_id):
 
 @app_views.route("amenities/<amenity_id>",
                  methods=["DELETE"], strict_slashes=False)
-def delete_amenity(amenity_id):
+def delete_amenity(amenity_id=None):
     """Route that DELETE an Amenity object
     with a given amenity_id.
     (Object class Amenity) del_amenity =
