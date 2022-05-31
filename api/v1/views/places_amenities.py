@@ -12,24 +12,26 @@ from flask import jsonify, make_response, request, abort
 from os import getenv
 
 
-@app_views.route("/places/<place_id>/amenities", methods=['GET'], strict_slashes=False)
+@app_views.route("/places/<place_id>/amenities",
+                 methods=['GET'], strict_slashes=False)
 def amenities_by_place(place_id=None):
     """Routes to return a list of Amenities of
     a specific Place with a given id."""
     place = storage.get(Place, place_id)
     if not place:
         abort(404)
-    
+
     objs = place.amenities
 
     list_amen = []
     for obj in objs:
         list_amen.append(obj.to_dict())
-    
+
     return jsonify(list_amen)
 
 
-@app_views.route("/places/<place_id>/amenities/<amenity_id>", methods=['DELETE'], strict_slashes=False)
+@app_views.route("/places/<place_id>/amenities/<amenity_id>",
+                 methods=['DELETE'], strict_slashes=False)
 def del_amenity(place_id=None, amenity_id=None):
     """Deletes an Amenity from a selected Place
      with a given id."""
@@ -56,7 +58,8 @@ def del_amenity(place_id=None, amenity_id=None):
         abort(404)
 
 
-@app_views.route("/places/<place_id>/amenities/<amenity_id>", methods=['POST'], strict_slashes=False)
+@app_views.route("/places/<place_id>/amenities/<amenity_id>",
+                 methods=['POST'], strict_slashes=False)
 def link_amenity(place_id=None, amenity_id=None):
     """Links an Amenity from a selected Place
      with a given id."""
