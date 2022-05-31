@@ -11,7 +11,7 @@ from api.v1.views import app_views
 from flask import jsonify, make_response, request, abort
 
 
-@app_views.route("places/<place_id>/reviews", methods=["GET"],
+@app_views.route("/places/<place_id>/reviews", methods=["GET"],
                  strict_slashes=False)
 def reviews_by_place(place_id=None):
     """Route that returns all reviews associated
@@ -38,7 +38,7 @@ def review_by_id(review_id=None):
     return jsonify(wanted_review.to_dict())
 
 
-route = "reviews/<review_id>"
+route = "/reviews/<review_id>"
 @app_views.route(route, methods=["DELETE"], strict_slashes=False)
 def delete_review(review_id):
     """Route that delete a review from the storage
@@ -53,7 +53,7 @@ def delete_review(review_id):
     return make_response(jsonify({}), 200)
 
 
-@app_views.route("places/<place_id>/reviews", methods=["POST"],
+@app_views.route("/places/<place_id>/reviews", methods=["POST"],
                  strict_slashes=False)
 def new_review(place_id):
     """Route to add a new review in a Place by a
@@ -84,7 +84,8 @@ def new_review(place_id):
     return make_response(jsonify(new_review.to_dict()), 201)
 
 
-@app_views.route("reviews/<review_id>", methods=["PUT"], strict_slashes=False)
+@app_views.route("/reviews/<review_id>",
+                 methods=["PUT"], strict_slashes=False)
 def update_review(review_id=None):
     """Route that updates review information
     through a given id.
