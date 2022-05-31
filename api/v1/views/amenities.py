@@ -58,7 +58,7 @@ def add_amenity():
     inf_amenity = request.get_json()
     if not inf_amenity:
         return make_response(jsonify({"error": "Not a JSON"}), 400)
-    if not inf_amenity["name"]:
+    if "name" not in inf_amenity:
         return make_response(jsonify({"error": "Missing name"}))
 
     new_amenity = Amenity(**inf_amenity)
