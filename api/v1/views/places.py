@@ -6,80 +6,97 @@ to the the storage engine (database of file).
 """
 from models import storage
 from models.place import Place
+from models.city import City
+from models.user import User
 from api.v1.views import app_views
 from flask import jsonify, make_response, request, abort
 
 
-@app_views.route("/users", methods=['GET'], strict_slashes=False)
-@app_views.route("/users/<user_id>", methods=['GET'], strict_slashes=False)
-def users_or_user(user_id=None):
-    """Routes to return a list of Users or
-    a specific User with a given id."""
-    if user_id is None:
-        list_users = []
-        for obj in storage.all(User).values():
-            list_users.append(obj.to_dict())
-        return jsonify(list_users)
-    else:
-        """Return a User with a given id"""
-        user = {}
-        user = storage.get(User, user_id)
-        if not user:
-            abort(404)
-        return jsonify(user.to_dict())
-
-
-@app_views.route("/users/<user_id>", methods=["DELETE"], strict_slashes=False)
-def delete_user(user_id=None):
-    """Route that delete an user with a given
-    id.
-    (Object Class User) del_user = user to
-                        delete."""
-    del_user = {}
-    del_user = storage.get(User, user_id)
-    if not del_user:
+@app_views.route("cities/<city_id>/places", methods=["GET"],
+                 strict_slashes=False)
+def places_by_city(city_id=None):
+    """Route that returns all places associated
+    to a (given) city_id."""
+    city = storage.get(City, city_id)
+    if not city or not city_id:
         abort(404)
-    storage.delete(del_user)
+    list_places = []
+    for key in storage.all(Place).values():
+        if key.city_id == city.id:
+            list_places.append(key.to_dict())
+    return jsonify(list_places)
+
+
+@app_views.route("/places/<place_id>", methods=['GET'], strict_slashes=False)
+def place_by_id(place_id=None):
+    """Return a User with a given id"""
+    wanted_place = {}
+    wanted_place = storage.get(Place, place_id)
+    if not wanted_place:
+        abort(404)
+    return jsonify(wanted_place.to_dict())
+
+
+@app_views.route("places/<place_id>", methods=["DELETE"], strict_slashes=False)
+def delete_place(place_id=None):
+    """Route that delete a place with a given
+    id.
+    (Object Class Place) del_place = place to
+                        delete."""
+    del_place = {}
+    del_place = storage.get(Place, place_id)
+    if not del_place:
+        abort(404)
+    storage.delete(del_place)
     storage.save()
     return make_response(jsonify({}), 200)
 
 
-@app_views.route("/users", methods=["POST"], strict_slashes=False)
-def new_user():
-    """Route to create a new User in the storage
-    engine.
-    (dict) inf_user = information from body request
-    that we need to create a new object (register)
-    User."""
-    inf_user = request.get_json()
-    if inf_user is None:
-        return make_response(jsonify({"error": "Not a JSON"}), 400)
-    if "email" not in inf_user:
-        return make_response(jsonify({"error": "Missing email"}), 400)
-    if "password" not in inf_user:
-        return make_response(jsonify({"error": "Missing password"}), 400)
-    new_user = User(**inf_user)
-    storage.new(new_user)
-    storage.save()
-    return make_response(jsonify(new_user.to_dict()), 201)
-
-
-@app_views.route("/users/<user_id>", methods=["PUT"], strict_slashes=False)
-def update_user(user_id=None):
-    """Route to update an User with a given id
-    (Object Class User)user_to_upd = User to
-    update.
-    (dict) inf_user = information from body request
-    that we need to update the User (register).
-    """
-    user_to_upd = storage.get(User, user_id)
-    if not user_to_upd:
+@app_views.route("cities/<city_id>/places", methods=["POST"],
+                 strict_slashes=False)
+def new_place(city_id):
+    """Route to add a new place in a City by a
+    given city id.
+    (json) inf_place = input information to create
+           new Place object """
+    city = storage.get(City, city_id)
+    if not city:
         abort(404)
-    inf_user = request.get_json()
-    if inf_user is None:
-        return make_response(jsonify({"error": "Not a JSON"}), 400)
-    for key, value in inf_user.items():
-        if key not in ["id", "email", "created_at", "updated_at"]:
-            setattr(user_to_upd, key, value)
+
+    inf_place = request.get_json()
+    if not inf_place:
+        return make_response(jsonify({"errorr": "Not a JSON"}), 400)
+    if "user_id" not in inf_place:
+        return make_response(jsonify({"errorr": "Missing user_id"}), 400)
+    user = storage.get(User, inf_place.get("user_id"))
+    if not user:
+        abort(404)
+    if "name" not in inf_place:
+        return make_response(jsonify({"error": "Missing name"}), 400)
+
+    inf_place["city_id"] = city_id
+    new_place = City(**inf_place)
+    storage.new(new_place)
     storage.save()
-    return make_response(jsonify(user_to_upd.to_dict()), 200)
+    return make_response(jsonify(new_place.to_dict()), 201)
+
+
+@app_views.route("/places/<place_id>", methods=["PUT"], strict_slashes=False)
+def update_place(place_id=None):
+    """Route to update a Place with a given id
+    (Object Class Place)place_to_upd = Place to
+    update.
+    (dict) inf_place = information from body request
+    that we need to update the Place (register).
+    """
+    place_to_upd = storage.get(Place, place_id)
+    if not place_to_upd:
+        abort(404)
+    inf_place = request.get_json()
+    if inf_place is None:
+        return make_response(jsonify({"error": "Not a JSON"}), 400)
+    for key, value in inf_place.items():
+        if key not in ["id", "user_id", "created_at", "updated_at", "city_id"]:
+            setattr(place_to_upd, key, value)
+    storage.save()
+    return make_response(jsonify(place_to_upd.to_dict()), 200)
