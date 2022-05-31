@@ -54,7 +54,7 @@ def add_amenity():
     if not inf_amenity:
         return make_response(jsonify({"error": "Not a JSON"}), 400)
     if "name" not in inf_amenity:
-        return make_response(jsonify({"error": "Missing name"}))
+        return make_response(jsonify({"error": "Missing name"}), 400)
 
     new_amenity = Amenity(**inf_amenity)
     storage.new(new_amenity)
