@@ -18,7 +18,7 @@ def users_or_user(user_id=None):
     if user_id is None:
         list_users = []
         for obj in storage.all(User).values():
-            list_users.append(obj)
+            list_users.append(obj.to_dict())
         return jsonify(list_users)
     else:
         """Return a User with a given id"""
