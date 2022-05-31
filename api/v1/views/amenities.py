@@ -29,7 +29,7 @@ def all_amenities(amenity_id=None):
             abort(404)
         return jsonify(wanted_amenity.to_dict())
 
-@app_views.route("amenities/<amenity_id>",
+@app_views.route("/amenities/<amenity_id>",
                  methods=["DELETE"], strict_slashes=False)
 def delete_amenity(amenity_id=None):
     """Route that DELETE an Amenity object
@@ -61,7 +61,7 @@ def add_amenity():
     storage.save()
     return make_response(jsonify(new_amenity.to_dict()), 201)
 
-@app_views.route("amenities/<amenity_id>", methods=["PUT"],
+@app_views.route("/amenities/<amenity_id>", methods=["PUT"],
                  strict_slashes=False)
 def update_amenity(amenity_id=None):
     """Route that updates an Amenity with a
