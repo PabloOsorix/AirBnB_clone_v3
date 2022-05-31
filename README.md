@@ -154,7 +154,7 @@ EOF  all  create  destroy  help  quit  show  update
 No known bugs at this time. 
 
 ## Authors
-Felipe Leon - [Github]() / [Twitter]()  
+Felipe Leon - [Github](https://github.com/pipeleon) / [Twitter]()  
 Pablo Osorio - [Github](https://github.com/PabloOsorix) / [Twitter](https://twitter.com/Pabllitoosorio)
 
 
