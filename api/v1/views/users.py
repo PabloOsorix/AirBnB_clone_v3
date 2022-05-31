@@ -44,7 +44,7 @@ def delete_user(user_id=None):
     return make_response(jsonify({}), 200)
 
 
-@app_views.route("/users", methods=['POST'], strict_slashes=False)
+@app_views.route("/users", methods=["POST"], strict_slashes=False)
 def new_user():
     """Route to create a new User in the storage
     engine.
@@ -52,7 +52,7 @@ def new_user():
     that we need to create a new object (register)
     User."""
     inf_user = request.get_json
-    if not inf_user:
+    if inf_user is None:
         return make_response(jsonify({"error": "Not a JSON"}), 400)
     if "email" not in inf_user:
         return make_response(jsonify({"error": "Missing email"}), 400)
@@ -64,7 +64,7 @@ def new_user():
     return make_response(jsonify(new_user.to_dict()), 201)
 
 
-@app_views.route("/users/<user_id>", methods=['PUT'], strict_slashes=False)
+@app_views.route("/users/<user_id>", methods=["PUT"], strict_slashes=False)
 def update_user(user_id=None):
     """Route to update an User with a given id
     (Object Class User)user_to_upd = User to
@@ -76,7 +76,7 @@ def update_user(user_id=None):
     if not user_to_upd:
         abort(404)
     inf_user = request.get_json()
-    if not inf_user:
+    if inf_user is None:
         return make_response(jsonify({"error": "Not a JSON"}), 400)
     for key, value in inf_user.items():
         if key not in ["id", "email", "created_at", "updated_at"]:
