@@ -3,7 +3,6 @@
 Module that contains all default RESTful API
 actions for the Amenity objects
 """
-from hashlib import new
 from models import storage
 from models.amenity import Amenity
 from api.v1.views import app_views
