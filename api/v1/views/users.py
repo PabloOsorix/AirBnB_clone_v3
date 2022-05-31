@@ -51,7 +51,7 @@ def new_user():
     (dict) inf_user = information from body request
     that we need to create a new object (register)
     User."""
-    inf_user = request.get_json
+    inf_user = request.get_json()
     if inf_user is None:
         return make_response(jsonify({"error": "Not a JSON"}), 400)
     if "email" not in inf_user:
