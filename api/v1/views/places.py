@@ -179,4 +179,7 @@ def places_search():
         new_dict.append(place.to_dict())
     print(type(new_dict))
 
+    for i in new_dict:
+        print(i)
+
     return jsonify(new_dict)
