@@ -143,7 +143,7 @@ def places_search():
 
     for city_id in list_cities:
         city = storage.get(City, city_id)
-        if city.stade_id not in list_states:
+        if city.state_id not in list_states:
             for place in storage.all(Place).values():
                 if place.city_id == city.id:
                     list_places.append(place)
