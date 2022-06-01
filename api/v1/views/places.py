@@ -152,9 +152,8 @@ def places_search():
         for obj in storage.all(Place).values():
             list_places.append(obj.to_dict())
 
+    to_delete = []
     if "amenities" in info.keys():
-        to_delete = []
-
         for place in list_places:
             count = 0
             for amenity_id in list_amenities:
