@@ -180,6 +180,6 @@ def places_search():
     print(type(new_dict))
 
     for i in new_dict:
-        print(i)
+        del i["amenities"]
 
     return jsonify(new_dict)
