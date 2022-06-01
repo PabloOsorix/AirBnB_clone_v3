@@ -165,7 +165,7 @@ def places_search():
             count = 0
             for amenity_id in list_amenities:
                 amenity = storage.get(Amenity, amenity_id)
-                if "amenities" in place.__dict__:
+                if hasattr(place, "amenities"):
                     if amenity in place.amenities:
                         count += 1
             if count == len(list_amenities):
