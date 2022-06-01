@@ -114,9 +114,12 @@ def places_search():
     if info is None:
         return make_response(jsonify({"error": "Not a JSON"}), 400)
 
-    list_states = info["states"]
-    list_cities = info["cities"]
-    list_amenities = info["amenities"]
+    if "states" in info.keys():
+        list_states = info["states"]
+    if "cities" in info.keys():
+        list_cities = info["cities"]
+    if "amenities" in info.keys():
+        list_amenities = info["amenities"]
 
     len_total = len(list_states) + len(list_cities) + len(list_amenities)
 
