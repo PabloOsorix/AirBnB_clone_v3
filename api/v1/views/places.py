@@ -160,7 +160,7 @@ def places_search():
                 amenity = storage.get(Amenity, amenity_id)
                 if amenity in place.amenities:
                     count += 1
-            if count > 0:
+            if count == len(list_amenities):
                 to_print.append(place)
     else:
         to_print = list_places
