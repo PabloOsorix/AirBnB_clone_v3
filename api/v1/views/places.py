@@ -156,8 +156,10 @@ def places_search():
     if "amenities" in info.keys():
         for place in list_places:
             count = 0
+            print(place.name)
             for amenity_id in list_amenities:
                 amenity = storage.get(Amenity, amenity_id)
+                print(amenity.name)
                 if amenity in place.amenities:
                     count += 1
             if count == 0:
