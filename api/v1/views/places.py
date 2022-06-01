@@ -169,6 +169,6 @@ def places_search():
     new_dict = []
 
     for place in list_places:
-        new_dict.append(place.to)
+        new_dict.append(place.to_dict())
 
     return jsonify(new_dict)
