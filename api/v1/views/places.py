@@ -165,6 +165,8 @@ def places_search():
             print(count)
             if count > 0:
                 to_print.append(place)
+    else:
+        to_print = list_places
     print("done")
     print(len(list_places))
     print(len(to_print))
