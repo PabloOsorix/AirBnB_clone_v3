@@ -158,7 +158,6 @@ def places_search():
             count = 0
             for amenity_id in list_amenities:
                 amenity = storage.get(Amenity, amenity_id)
-                print(amenity.name)
                 if amenity in place.amenities:
                     count += 1
             if count > 0:
