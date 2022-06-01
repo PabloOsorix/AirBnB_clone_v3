@@ -152,7 +152,7 @@ def places_search():
         for obj in storage.all(Place).values():
             list_places.append(obj.to_dict())
 
-    if len(list_amenities) > 0:
+    if "amenities" in info.keys():
         to_delete = []
 
         for place in list_places:
