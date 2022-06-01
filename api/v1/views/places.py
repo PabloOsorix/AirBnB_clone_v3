@@ -152,7 +152,7 @@ def places_search():
         for obj in storage.all(Place).values():
             list_places.append(obj.to_dict())
 
-    to_delete = []
+    to_print = []
     if "amenities" in info.keys():
         for place in list_places:
             count = 0
@@ -163,17 +163,15 @@ def places_search():
                 if amenity in place.amenities:
                     count += 1
             print(count)
-            if count == 0:
-                to_delete.append(place)
+            if count > 0:
+                to_print.append(place)
     print("done")
     print(len(list_places))
-
-    for i in to_delete:
-        list_places.remove(i)
+    print(len(to_print))
 
     new_dict = []
 
-    for place in list_places:
+    for place in to_print:
         new_dict.append(place.to_dict())
 
     return jsonify(new_dict)
