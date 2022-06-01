@@ -176,5 +176,6 @@ def places_search():
     for place in to_print:
         print(type(place))
         new_dict.append(place.to_dict())
+    print(type(new_dict))
 
     return jsonify(new_dict)
