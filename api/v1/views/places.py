@@ -128,7 +128,7 @@ def places_search():
     if len(info.keys()) == 0 or len_total == 0:
         list_places = []
         for obj in storage.all(Place).values():
-            list_places.append(obj)
+            list_places.append(obj.to_dict())
         return jsonify(list_places)
 
     list_places = []
@@ -155,11 +155,11 @@ def places_search():
                     if place.city_id == city.id:
                         list_places.append(place)
 
+    to_print = []
     if len(list_places) == 0 and len(info.keys()) > 0:
         for obj in storage.all(Place).values():
             list_places.append(obj)
 
-    to_print = []
     if "amenities" in info.keys():
         for place in list_places:
             count = 0
