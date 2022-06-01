@@ -38,8 +38,8 @@ def review_by_id(review_id=None):
     return jsonify(wanted_review.to_dict())
 
 
-route = "/reviews/<review_id>"
-@app_views.route(route, methods=["DELETE"], strict_slashes=False)
+@app_views.route("/reviews/<review_id>",
+                 methods=["DELETE"], strict_slashes=False)
 def delete_review(review_id):
     """Route that delete a review from the storage
     engine with a given id.
