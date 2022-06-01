@@ -152,8 +152,8 @@ def places_search():
                             list_places.append(place)
             else:
                 for place in storage.all(Place).values():
-                        if place.city_id == city.id:
-                            list_places.append(place)
+                    if place.city_id == city.id:
+                        list_places.append(place)
 
     if len(list_places) == 0 and len(info.keys()) > 0:
         for obj in storage.all(Place).values():
