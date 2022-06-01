@@ -148,9 +148,9 @@ def places_search():
                 if place.city_id == city.id:
                     list_places.append(place)
 
-    #if len(list_places) == 0 and len(info.keys()) > 0:
-    #    for obj in storage.all(Place).values():
-    #        list_places.append(obj.to_dict())
+    if len(list_places) == 0 and len(info.keys()) > 0:
+        for obj in storage.all(Place).values():
+            list_places.append(obj.to_dict())
 
     to_print = []
     if "amenities" in info.keys():
