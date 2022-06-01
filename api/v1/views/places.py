@@ -22,7 +22,7 @@ def places_by_city(city_id=None):
         abort(404)
     list_places = []
     for key in storage.all(Place).values():
-        if key.city_id == city.id:
+        if key.city_id == city_id:
             list_places.append(key.to_dict())
     return jsonify(list_places)
 
@@ -76,7 +76,7 @@ def new_place(city_id=None):
         return make_response(jsonify({"error": "Missing name"}), 400)
 
     inf_place["city_id"] = city_id
-    new_place = City(**inf_place)
+    new_place = Place(**inf_place)
     storage.new(new_place)
     storage.save()
     return make_response(jsonify(new_place.to_dict()), 201)
