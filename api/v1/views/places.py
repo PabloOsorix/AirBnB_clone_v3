@@ -162,8 +162,11 @@ def places_search():
                 print(amenity.name)
                 if amenity in place.amenities:
                     count += 1
+            print(count)
             if count == 0:
                 to_delete.append(place)
+    print("done")
+    print(len(list_places))
 
     for i in to_delete:
         list_places.remove(i)
