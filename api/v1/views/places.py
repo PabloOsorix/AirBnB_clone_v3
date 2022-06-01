@@ -107,7 +107,7 @@ def update_place(place_id=None):
 
 @app_views.route("/places_search", methods=["POST"], strict_slashes=False)
 def places_search():
-    """ retrieves all Place objects depending 
+    """ retrieves all Place objects depending
     of the JSON in the body of the request
     """
     info = request.get_json()
@@ -126,7 +126,7 @@ def places_search():
             list_places.append(obj.to_dict())
         return jsonify(list_places)
 
-    list_places = []    
+    list_places = []
 
     for state_id in list_states:
         state = storage.get(State, state_id)
@@ -135,18 +135,17 @@ def places_search():
                 for place in storage.all(Place).values():
                     if place.city_id == city.id:
                         list_places.append(place)
-    
+
     for city_id in list_cities:
         city = storage.get(City, city_id)
-        if not city.stade_id in list_states:
+        if city.stade_id not in list_states:
             for place in storage.all(Place).values():
                 if place.city_id == city.id:
                     list_places.append(place)
-    
+
     if len(list_places) == 0:
         for obj in storage.all(Place).values():
             list_places.append(obj.to_dict())
-    
 
     if len(list_amenities) > 0:
         to_delete = []
@@ -162,10 +161,10 @@ def places_search():
 
     for i in to_delete:
         list_places.remove(i)
-    
+
     new_dict = []
 
     for place in list_places:
         new_dict.append(place.to)
-    
+
     return jsonify(new_dict)
