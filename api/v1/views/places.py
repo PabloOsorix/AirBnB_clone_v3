@@ -8,6 +8,8 @@ from models import storage
 from models.place import Place
 from models.city import City
 from models.user import User
+from models.state import State
+from models.amenity import Amenity
 from api.v1.views import app_views
 from flask import jsonify, make_response, request, abort
 
@@ -101,3 +103,69 @@ def update_place(place_id=None):
             setattr(place_to_upd, key, value)
     storage.save()
     return make_response(jsonify(place_to_upd.to_dict()), 200)
+
+
+@app_views.route("/places_search", methods=["POST"], strict_slashes=False)
+def places_search():
+    """ retrieves all Place objects depending 
+    of the JSON in the body of the request
+    """
+    info = request.get_json()
+    if info is None:
+        return make_response(jsonify({"error": "Not a JSON"}), 400)
+
+    list_states = info["states"]
+    list_cities = info["cities"]
+    list_amenities = info["amenities"]
+
+    len_total = len(list_states) + len(list_cities) + len(list_amenities)
+
+    if len(info.keys()) == 0 or len_total == 0:
+        list_places = []
+        for obj in storage.all(Place).values():
+            list_places.append(obj.to_dict())
+        return jsonify(list_places)
+
+    list_places = []    
+
+    for state_id in list_states:
+        state = storage.get(State, state_id)
+        for city in storage.all(City).values():
+            if city.state_id == state.id:
+                for place in storage.all(Place).values():
+                    if place.city_id == city.id:
+                        list_places.append(place)
+    
+    for city_id in list_cities:
+        city = storage.get(City, city_id)
+        if not city.stade_id in list_states:
+            for place in storage.all(Place).values():
+                if place.city_id == city.id:
+                    list_places.append(place)
+    
+    if len(list_places) == 0:
+        for obj in storage.all(Place).values():
+            list_places.append(obj.to_dict())
+    
+
+    if len(list_amenities) > 0:
+        to_delete = []
+
+        for place in list_places:
+            count = 0
+            for amenity_id in list_amenities:
+                amenity = storage.get(Amenity, amenity_id)
+                if amenity in place.amenities:
+                    count += 1
+            if count == 0:
+                to_delete.append(place)
+
+    for i in to_delete:
+        list_places.remove(i)
+    
+    new_dict = []
+
+    for place in list_places:
+        new_dict.append(place.to)
+    
+    return jsonify(new_dict)
