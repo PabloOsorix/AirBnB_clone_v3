@@ -133,20 +133,22 @@ def places_search():
 
     list_places = []
 
-    for state_id in list_states:
-        state = storage.get(State, state_id)
-        for city in storage.all(City).values():
-            if city.state_id == state.id:
+    if "states" in info.keys():
+        for state_id in list_states:
+            state = storage.get(State, state_id)
+            for city in storage.all(City).values():
+                if city.state_id == state.id:
+                    for place in storage.all(Place).values():
+                        if place.city_id == city.id:
+                            list_places.append(place)
+
+    if "cities" in info.keys():
+        for city_id in list_cities:
+            city = storage.get(City, city_id)
+            if city.state_id not in list_states:
                 for place in storage.all(Place).values():
                     if place.city_id == city.id:
                         list_places.append(place)
-
-    for city_id in list_cities:
-        city = storage.get(City, city_id)
-        if city.state_id not in list_states:
-            for place in storage.all(Place).values():
-                if place.city_id == city.id:
-                    list_places.append(place)
 
     if len(list_places) == 0 and len(info.keys()) > 0:
         for obj in storage.all(Place).values():
