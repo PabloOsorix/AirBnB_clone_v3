@@ -47,6 +47,7 @@ def del_amenity(place_id=None, amenity_id=None):
     for obj in objs:
         if obj.id == amenity_id:
             place.amenities.remove(obj)
+            storage.save()
             flag = 1
             break
         else:
